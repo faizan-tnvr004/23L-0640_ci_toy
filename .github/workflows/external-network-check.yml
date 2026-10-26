@@ -1,0 +1,16 @@
+name: External network check (Task 7)
+
+on: [workflow_dispatch]
+
+jobs:
+  call-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Where is this runner? (a network other than mine)
+        run: curl -s https://ipinfo.io | grep -E '"(ip|city|country|org)"'
+      - name: GET /health on the AWS EC2 API
+        run: curl -s -m 30 -w '\nHTTP %{http_code}\n' http://13.239.43.95/health
+      - name: POST /predict without API key (expect 401)
+        run: |
+          curl -s -o img.jpg https://picsum.photos/300
+          curl -s -m 60 -w '\nHTTP %{http_code}\n' -F "image=@img.jpg" "http://13.239.43.95/predict?format=json"
