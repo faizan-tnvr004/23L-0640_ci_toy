@@ -1,5 +1,5 @@
 def add(a, b):
-    return a - b  # bug introduced on purpose to see a red run
+    return a + b
 
 
 def is_ai(p_ai, threshold=0.5):
